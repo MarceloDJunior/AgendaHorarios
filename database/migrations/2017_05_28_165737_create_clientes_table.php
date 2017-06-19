@@ -17,7 +17,7 @@ class CreateClientesTable extends Migration
             $table->increments('id');
             $table->string('nome', 50);
             $table->string('email', 50)->unique();
-            $table->string('celular', 20);
+            $table->string('telefone', 20);
             $table->rememberToken();
             $table->timestamps();
         });
