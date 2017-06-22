@@ -44,7 +44,7 @@ class AgendamentosController extends Controller
     {
         $novo_agendamento = new Agendamento($request->all());
         $novo_agendamento->user_id = $request->session()->get("user")->id;
-        $novo_agendamento->dia = date("Y-m-d", strtotime($novo_agendamento->dia));
+        $novo_agendamento->dia = Carbon::createFromFormat('d/m/Y', $novo_agendamento->dia)->format('Y-m-d');
 
         Agendamento::create($novo_agendamento->toArray());
 
