@@ -3,13 +3,13 @@
 
 @section("content")
     <div class="container">
-        <h2>Editar cliente</h2>
+        <h2>Novo usuário</h2>
 
-        {!! Form::open(['url' => "clientes/$cliente->id/update"]) !!}
+        {!! Form::open(['url' => 'users/store']) !!}
 
         <div class="form-group">
             {!! Form::label('nome', 'Nome') !!}
-            {!! Form::text('nome', $cliente->nome, ['class' => 'form-control']) !!}
+            {!! Form::text('nome', null, ['class' => 'form-control']) !!}
             @if($errors->has("nome"))
                 <div class="error">{{$errors->first('nome')}}</div>
             @endif
@@ -17,22 +17,22 @@
 
         <div class="form-group">
             {!! Form::label('email', 'E-mail') !!}
-            {!! Form::email('email', $cliente->email, ['class' => 'form-control']) !!}
+            {!! Form::email('email', null, ['class' => 'form-control']) !!}
             @if($errors->has("email"))
                 <div class="error">{{$errors->first('email')}}</div>
             @endif
         </div>
 
         <div class="form-group">
-            {!! Form::label('telefone', 'Telefone') !!}
-            {!! Form::text('telefone', $cliente->telefone, ['class' => 'form-control']) !!}
-            @if($errors->has("telefone"))
-                <div class="error">{{$errors->first('telefone')}}</div>
+            {!! Form::label('senha', 'Senha') !!}
+            {!! Form::password('senha', ['class' => 'form-control']) !!}
+            @if($errors->has("senha"))
+                <div class="error">{{$errors->first('senha')}}</div>
             @endif
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Salvar cliente', ['class' => 'btn btn-success']) !!}
+            {!! Form::submit('Salvar usuário', ['class' => 'btn btn-success']) !!}
         </div>
 
         {!! Form::close() !!}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cliente;
+use App\Http\Requests\ClientesRequest;
 use Illuminate\Http\Request;
 
 class ClientesController extends Controller
@@ -34,7 +35,7 @@ class ClientesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientesRequest $request)
     {
         $novo_cliente = $request->all();
         Cliente::create($novo_cliente);
@@ -61,7 +62,7 @@ class ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClientesRequest $request, $id)
     {
         $cliente = Cliente::find($id)->update($request->all());
         return redirect('clientes');
@@ -75,7 +76,15 @@ class ClientesController extends Controller
      */
     public function destroy($id)
     {
-        Cliente::find($id)->delete();
-        return redirect('clientes');
+        $cliente = Cliente::find($id);
+        if(!$cliente->agendamentos()->where('agendamentos.cliente_id', $id)->exists()){
+            $cliente->delete();
+            return redirect('clientes');
+        }
+        else{
+            $clientes = Cliente::all();
+            $excluirerro = "O cliente '$cliente->nome' não pode ser excluído pois possui agendamentos referenciados.";
+            return view('clientes.index', ['clientes' => $clientes, 'excluirerro' => $excluirerro]);
+        }
     }
 }

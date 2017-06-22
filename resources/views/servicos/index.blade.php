@@ -5,7 +5,10 @@
 
     <div class="container">
         <h2>Serviços</h2>
-        <a href="{{ url('servicos/create') }}"><button type="button" class="btn btn-success margin-20">Novo serviço</button></a>
+        <a href="{{ url('servicos/create') }}"><button type="button" class="btn btn-success marginb-20">Novo serviço</button></a>
+        @if(!empty($excluirerro))
+            <div class="error">{{$excluirerro}}</div>
+        @endif
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <thead>

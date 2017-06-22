@@ -22,16 +22,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ url("/") }}">Logo</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="{{ url("agendamentos") }}" class="">Agendamentos</a></li>
                         <li><a href="{{ url("servicos") }}">Serviços</a></li>
                         <li><a href="{{ url("clientes") }}">Clientes</a></li>
+                        <li><a href="{{ url("users") }}">Usuários</a></li>
                     </ul>
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="#">Logado como: Marcelo</a></li>
+                        <li><a href="#">Logado como: {{ Session::get('user')->nome }}</a></li>
                         <li><a href="{{ url("logout") }}">Logout</a></li>
                     </ul>
                 </div>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Agendamento;
 use App\Cliente;
+use App\Http\Requests\AgendamentosRequest;
 use App\Servico;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AgendamentosController extends Controller
@@ -38,20 +40,15 @@ class AgendamentosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AgendamentosRequest $request)
     {
-        //
-    }
+        $novo_agendamento = new Agendamento($request->all());
+        $novo_agendamento->user_id = $request->session()->get("user")->id;
+        $novo_agendamento->dia = date("Y-m-d", strtotime($novo_agendamento->dia));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        Agendamento::create($novo_agendamento->toArray());
+
+        return redirect('agendamentos');
     }
 
     /**
@@ -62,7 +59,13 @@ class AgendamentosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $agendamento = Agendamento::find($id);
+        $clientes = Cliente::pluck("nome", "id");
+        $servicos = Servico::pluck("nome", "id");
+        $agendamento->hora_inicio = date('H:i',strtotime($agendamento->hora_inicio));
+        $agendamento->hora_fim = date('H:i',strtotime($agendamento->hora_fim));
+        return view('agendamentos.edit', ['agendamento' => $agendamento,
+            'clientes' => $clientes, 'servicos' => $servicos]);
     }
 
     /**
@@ -72,9 +75,13 @@ class AgendamentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AgendamentosRequest $request, $id)
     {
-        //
+        $agendamento = Agendamento::find($id);
+        $novo_agendamento = new Agendamento($request->all());
+        $novo_agendamento->dia = Carbon::createFromFormat('d/m/Y', $novo_agendamento->dia)->format('Y-m-d');
+        $agendamento->update($novo_agendamento->toArray());
+        return redirect('agendamentos');
     }
 
     /**
@@ -85,6 +92,7 @@ class AgendamentosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Agendamento::find($id)->delete();
+        return redirect('agendamentos');
     }
 }

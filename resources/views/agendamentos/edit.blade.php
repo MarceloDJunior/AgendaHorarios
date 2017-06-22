@@ -3,14 +3,14 @@
 
 @section("content")
     <div class="container">
-        <h2>Novo agendamento</h2>
+        <h2>Editar agendamento</h2>
 
-        {!! Form::open(['url' => 'agendamentos/store']) !!}
+        {!! Form::open(['url' => "agendamentos/$agendamento->id/update"]) !!}
 
         <div class="form-group">
             {!! Form::label('cliente_id', 'Cliente:') !!}
             {!! Form::select('cliente_id',
-                $clientes, 'Selecione um cliente',
+                $clientes, $agendamento->cliente->id,
                 ['class' => 'form-control']) !!}
             @if($errors->has("cliente_id"))
                 <div class="error">{{$errors->first('cliente_id')}}</div>
@@ -20,7 +20,7 @@
         <div class="form-group">
             {!! Form::label('servico_id', 'Serviço:') !!}
             {!! Form::select('servico_id',
-                $servicos, 'Selecione um serviço',
+                $servicos, $agendamento->servico->id,
                 ['class' => 'form-control']) !!}
             @if($errors->has("servico_id"))
                 <div class="error">{{$errors->first('servico_id')}}</div>
@@ -29,7 +29,8 @@
 
         <div class="form-group">
             {!! Form::label('dia', 'Selecione o dia:') !!}
-            {!! Form::text('dia', '', ['class' => 'form-control', 'id' => 'datepicker']) !!}
+            {!! Form::text('dia', Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y'),
+            ['class' => 'form-control', 'id' => 'datepicker']) !!}
             @if($errors->has("dia"))
                 <div class="error">{{$errors->first('dia')}}</div>
             @endif
@@ -39,7 +40,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     {!! Form::label('hora_inicio', 'Horário do início:') !!}
-                    {!! Form::time('hora_inicio', '', ['class' => 'form-control']) !!}
+                    {!! Form::time('hora_inicio', $agendamento->hora_inicio, ['class' => 'form-control']) !!}
                     @if($errors->has("hora_inicio"))
                         <div class="error">{{$errors->first('hora_inicio')}}</div>
                     @endif
@@ -48,7 +49,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     {!! Form::label('hora_fim', 'Horário do fim:') !!}
-                    {!! Form::time('hora_fim', '', ['class' => 'form-control']) !!}
+                    {!! Form::time('hora_fim', $agendamento->hora_fim, ['class' => 'form-control']) !!}
                     @if($errors->has("hora_fim"))
                         <div class="error">{{$errors->first('hora_fim')}}</div>
                     @endif

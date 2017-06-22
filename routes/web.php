@@ -12,9 +12,18 @@
 */
 
 Route::get('/', "LoginController@index");
-Route::post('login/', "LoginController@loginpo90-[");
+Route::get('login/', "LoginController@index");
+Route::post('login/', "LoginController@login");
+Route::get('logout/', "LoginController@logout");
 
 Route::group(['middleware' => 'usersession'], function () {
+
+    Route::get('users/', "UsersController@index");
+    Route::get('users/create', "UsersController@create");
+    Route::post('users/store', "UsersController@store");
+    Route::get('users/{id}/destroy', "UsersController@destroy");
+    Route::get('users/{id}/edit', "UsersController@edit");
+    Route::post('users/{id}/update', "UsersController@update");
 
     Route::get('clientes/', "ClientesController@index");
     Route::get('clientes/create', "ClientesController@create");

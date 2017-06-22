@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServicosRequest;
 use App\Servico;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class ServicosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServicosRequest $request)
     {
         $novo_servico = $request->all();
         Servico::create($novo_servico);
@@ -61,7 +62,7 @@ class ServicosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServicosRequest $request, $id)
     {
         $servico = Servico::find($id)->update($request->all());
         return redirect('servicos');
@@ -75,7 +76,15 @@ class ServicosController extends Controller
      */
     public function destroy($id)
     {
-        Servico::find($id)->delete();
-        return redirect('servicos');
+        $servico = Servico::find($id);
+        if(!$servico->agendamentos()->where('agendamentos.servico_id', $id)->exists()){
+            $servico->delete();
+            return redirect('servicos');
+        }
+        else{
+            $servicos = Servico::all();
+            $excluirerro = "O serviço '$servico->nome' não pode ser excluído pois possui agendamentos referenciados.";
+            return view('servicos.index', ['servicos' => $servicos, 'excluirerro' => $excluirerro]);
+        }
     }
 }

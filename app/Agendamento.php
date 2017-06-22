@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agendamento extends Model
 {
-    protected $fillable = ["inicio", "fim", "user_id", "cliente_id", "servico_id"];
+    protected $fillable = ["dia", "hora_inicio", "hora_fim", "user_id", "cliente_id", "servico_id"];
 
     public function cliente()
     {
@@ -22,5 +22,6 @@ class Agendamento extends Model
     {
         return $this->belongsTo('App\User');
     }
+
 
 }

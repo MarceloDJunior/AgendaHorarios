@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nome', 'email', 'senha',
     ];
 
     /**
@@ -24,11 +24,22 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'senha', 'remember_token',
     ];
 
     public function agendamentos()
     {
-        return $this->hasMany('Agendamento');
+        return $this->hasMany('App\Agendamento');
+    }
+
+    public static function login($user)
+    {
+        $result = User::select('id', 'nome', 'email')
+            ->where([
+                ['email', '=', $user->email],
+                ['senha', '=', $user->senha]
+            ])->first();
+
+        return $result;
     }
 }

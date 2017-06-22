@@ -10,7 +10,7 @@ class Servico extends Model
 
     public function agendamentos()
     {
-        return $this->hasMany('Agendamento');
+        return $this->hasMany('App\Agendamento');
     }
 
 }
