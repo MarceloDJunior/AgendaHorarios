@@ -40,6 +40,7 @@ Route::group(['middleware' => 'usersession'], function () {
     Route::post('servicos/{id}/update', "ServicosController@update");
 
     Route::get('agendamentos/', "AgendamentosController@index");
+    Route::get('agendamentos/getAgendamentos', "AgendamentosController@getAgendamentos");
     Route::get('agendamentos/create', "AgendamentosController@create");
     Route::post('agendamentos/store', "AgendamentosController@store");
     Route::get('agendamentos/{id}/destroy', "AgendamentosController@destroy");

@@ -8,6 +8,7 @@ use App\Http\Requests\AgendamentosRequest;
 use App\Servico;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AgendamentosController extends Controller
 {
@@ -18,8 +19,19 @@ class AgendamentosController extends Controller
      */
     public function index()
     {
-        $agendamentos = Agendamento::with('cliente', 'servico', 'user')->get();
-        return view('agendamentos.index', ['agendamentos' => $agendamentos]);
+        return view('agendamentos.index');
+    }
+
+    public function getAgendamentos()
+    {
+        $datainicio = $_GET['start'];
+        $datafim = $_GET['end'];
+
+        $agendamento = new Agendamento();
+        $user = Session::get('user')->id;
+        $event_array = $agendamento->getAgendamentosData($datainicio, $datafim, $user);
+
+        return json_encode($event_array);
     }
 
     /**
@@ -37,7 +49,7 @@ class AgendamentosController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(AgendamentosRequest $request)
@@ -54,7 +66,7 @@ class AgendamentosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -62,8 +74,8 @@ class AgendamentosController extends Controller
         $agendamento = Agendamento::find($id);
         $clientes = Cliente::pluck("nome", "id");
         $servicos = Servico::pluck("nome", "id");
-        $agendamento->hora_inicio = date('H:i',strtotime($agendamento->hora_inicio));
-        $agendamento->hora_fim = date('H:i',strtotime($agendamento->hora_fim));
+        $agendamento->hora_inicio = date('H:i', strtotime($agendamento->hora_inicio));
+        $agendamento->hora_fim = date('H:i', strtotime($agendamento->hora_fim));
         return view('agendamentos.edit', ['agendamento' => $agendamento,
             'clientes' => $clientes, 'servicos' => $servicos]);
     }
@@ -71,8 +83,8 @@ class AgendamentosController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(AgendamentosRequest $request, $id)
@@ -87,7 +99,7 @@ class AgendamentosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

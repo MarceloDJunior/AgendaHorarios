@@ -9,6 +9,8 @@
     <link href="{{ asset("css/jquery-ui.min.css") }}" rel="stylesheet" />
     <link href="{{ asset("css/style.css") }}" rel="stylesheet" />
     <link href="{{ asset("css/font-awesome.min.css") }}" rel="stylesheet" />
+    <link href="{{ asset("css/fullcalendar.css") }}" rel="stylesheet"/>
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
 </head>
 <body>
 <div class="navbar-wrapper">
@@ -42,9 +44,11 @@
 
 @yield('content')
 
-<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('js/agenda.js') }}"></script>
 <script>
     $(document).ready(function(){
         $("#datepicker").datepicker({
